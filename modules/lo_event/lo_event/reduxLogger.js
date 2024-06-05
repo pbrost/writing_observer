@@ -19,7 +19,9 @@
  * use bits and pieces, or to treat this code as an examplar.
  */
 import * as redux from 'redux';
-import thunk from 'redux-thunk';
+import * as thunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 const EMIT_EVENT = 'EMIT_EVENT';
 const EMIT_LOCKFIELDS = 'EMIT_LOCKFIELDS';
@@ -122,17 +124,31 @@ const reducer = (state = {}, action) => {
 const eventQueue = [];
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || redux.compose;
 
+console.log({storage:storage});
 
-// This should just be redux.applyMiddleware(thunk))
-// There is a bug in our version of redux-thunk where, in node, this must be thunk.default.
-//
-// This shows up as an error in the test case. If the error goes away, we should switch this
-// back to thunk.
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+//console.log({persistedReducerStorage:persistedReducer.storage});
 export let store = redux.createStore(
-  reducer,
+  persistedReducer, //reducer,
   {event: null}, // Base state
+  // This should just be redux.applyMiddleware(thunk))
+  // There is a bug in our version of redux-thunk where, in node, this must be thunk.default.
+  //
+  // This shows up as an error in the test case. If the error goes away, we should switch this
+  // back to thunk.
   composeEnhancers(redux.applyMiddleware(thunk.default || thunk))
 );
+
+console.log({persistedReducerStorage:persistedReducer.storage});
+
+export let persistor = persistStore(store);
+
 let promise = null;
 let previousEvent = null;
 let lockFields = null;

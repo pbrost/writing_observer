@@ -36,5 +36,9 @@
     "stylelint": "^15.5.0",
     "stylelint-config-standard": "^33.0.0",
     "stylelint-scss": "^4.6.0"
+  },
+  "dependencies": {
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2"
   }
 }

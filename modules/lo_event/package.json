@@ -18,8 +18,11 @@
   "homepage": "https://github.com/ETS-Next-Gen/writing_observer#readme",
   "type": "module",
   "dependencies": {
+    "fs": "^0.0.1-security",
     "indexeddb-js": "^0.0.14",
     "jasmine": "^5.1.0",
+    "redux-persist": "^6.0.0",
+    "redux-persist-node-storage": "^2.0.0",
     "redux-thunk": "^2.4.2",
     "sqlite3": "^5.1.6",
     "ws": "^8.14.2"
